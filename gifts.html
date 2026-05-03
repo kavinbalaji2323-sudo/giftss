@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIFTS</title>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("HNtEDz6fJXOXCVcZm");
+  })();
+</script>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fcefee;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #counter {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #ff4d6d;
+  }
+
+  #giftContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 420px;
+    margin: auto;
+  }
+
+  .gift {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 3px solid transparent;
+  }
+
+  .selected {
+    border: 3px solid green;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    background: gray;
+  }
+
+  /* 🔥 Loader */
+  #loader {
+    display: none;
+    margin-top: 20px;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ffd6de;
+    border-top: 4px solid #ff4d6d;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</head>
+
+<body>
+
+<h2 id="welcome"></h2>
+<p>Select any 3 gifts 🎁</p>
+<div id="counter">Selected: 0 / 3</div>
+
+<div id="giftContainer">
+  <img src="teddy.jpeg" class="gift" onclick="toggleGift(this,'Teddy')">
+  <img src="panda.jpeg" class="gift" onclick="toggleGift(this,'Panda Light')">
+  <img src="frame.jpeg" class="gift" onclick="toggleGift(this,'Photo Frame')">
+
+  <img src="bracelete.jpeg" class="gift" onclick="toggleGift(this,'Bracelet')">
+  <img src="Ring.jpeg" class="gift" onclick="toggleGift(this,'Ring')">
+  <img src="bangles.jpeg" class="gift" onclick="toggleGift(this,'Bangles')">
+
+  <img src="jimmiki.jpeg" class="gift" onclick="toggleGift(this,'Jamuka Box')">
+  <img src="diary.jpeg" class="gift" onclick="toggleGift(this,'Dairy Milk')">
+  <img src="watch.jpeg" class="gift" onclick="toggleGift(this,'Watch')">
+</div>
+
+<!-- 🔥 Button -->
+<button id="submitBtn" onclick="submitGifts()">Submit ❤️</button>
+
+<!-- 🔥 Loader -->
+<div id="loader">
+  <div class="spinner"></div>
+  <p>Sending... 💌</p>
+</div>
+
+<script>
+const username = localStorage.getItem("username");
+document.getElementById("welcome").innerText = "Hi " + username + " 👋";
+
+let selectedGifts = [];
+
+function toggleGift(el, name) {
+  if (selectedGifts.includes(name)) {
+    selectedGifts = selectedGifts.filter(g => g !== name);
+    el.classList.remove("selected");
+  } else {
+    if (selectedGifts.length >= 3) {
+      alert("Only 3 gifts allowed!");
+      return;
+    }
+    selectedGifts.push(name);
+    el.classList.add("selected");
+  }
+
+  document.getElementById("counter").innerText =
+    "Selected: " + selectedGifts.length + " / 3";
+}
+
+function submitGifts() {
+  if (selectedGifts.length !== 3) {
+    alert("Select 3 gifts");
+    return;
+  }
+
+  // 🔥 show loader
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("submitBtn").innerText = "Sending...";
+  document.getElementById("submitBtn").disabled = true;
+
+  const templateParams = {
+    name: username,
+    gifts: selectedGifts.join(", ")
+  };
+
+  emailjs.send("service_ix3cdj5", "template_lkkpfdn", templateParams)
+    .then(() => {
+      window.location.href = "final.html";
+    })
+    .catch(() => {
+      alert("Error ❌");
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("submitBtn").innerText = "Submit ❤️";
+      document.getElementById("submitBtn").disabled = false;
+    });
+}
+</script>
+
+</body>
+</html>

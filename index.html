@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift Selection</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 320px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #ff4d6d;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e63950;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Enter Your Name 💖</h2>
+
+    <input type="text" id="name" placeholder="Enter your name">
+
+    <br>
+    <button onclick="goNext()">Continue ➡️</button>
+  </div>
+
+  <script>
+    function goNext() {
+      const name = document.getElementById("name").value.trim();
+
+      if (name === "") {
+        alert("Please enter name");
+        return;
+      }
+
+      // Save name
+      localStorage.setItem("username", name);
+
+      // Go to gifts page
+      window.location.href = "gifts.html";
+    }
+  </script>
+
+</body>
+</html>
